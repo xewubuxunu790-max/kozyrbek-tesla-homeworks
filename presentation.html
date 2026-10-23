@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Гормоны и жизнь — Отажонов Саидахмад, 8 Тесла</title>
+    <style>
+        :root {
+            --bg-dark: #090a0f;
+            --card-bg: #12141d;
+            --border-color: #232736;
+            --text-main: #f3f4f6;
+            --text-muted: #9ca3af;
+            --adrenaline: #ff3b30;
+            --adrenaline-glow: rgba(255, 59, 48, 0.15);
+            --melatonin: #5e5ce6;
+            --melatonin-glow: rgba(94, 92, 230, 0.15);
+            --accent: #ffffff;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            overflow: hidden;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        /* Контейнер слайдов */
+        .slides-container {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            max-width: 1280px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 60px;
+        }
+
+        .slide {
+            position: absolute;
+            width: calc(100% - 120px);
+            height: calc(100% - 80px);
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            pointer-events: none;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            pointer-events: auto;
+        }
+
+        /* Типографика */
+        .badge {
+            display: inline-block;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+            width: fit-content;
+            border: 1px solid var(--border-color);
+            background: var(--card-bg);
+        }
+
+        .badge.red { color: var(--adrenaline); border-color: var(--adrenaline); background: var(--adrenaline-glow); }
+        .badge.blue { color: #8280ff; border-color: var(--melatonin); background: var(--melatonin-glow); }
+
+        h1 {
+            font-size: 54px;
+            font-weight: 800;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: -1px;
+        }
+
+        h2 {
+            font-size: 38px;
+            font-weight: 700;
+            margin-bottom: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        h3 {
+            font-size: 22px;
+            font-weight: 600;
+            margin-bottom: 12px;
+        }
+
+        p, li {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-muted);
+        }
+
+        ul {
+            list-style-position: inside;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        li strong {
+            color: var(--text-main);
+        }
+
+        /* Сетки и карточки */
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 24px;
+            width: 100%;
+        }
+
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 16px;
+            padding: 28px;
+        }
+
+        .card.red-border { border-top: 4px solid var(--adrenaline); }
+        .card.blue-border { border-top: 4px solid var(--melatonin); }
+
+        .meta-box {
+            margin-top: 40px;
+            display: flex;
+            gap: 32px;
+            padding-top: 24px;
+            border-top: 1px solid var(--border-color);
+        }
+
+        .meta-item span {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+
+        .meta-item strong {
+            font-size: 18px;
+            color: var(--text-main);
+        }
+
+        /* Таблица */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--card-bg);
+            border-radius: 16px;
+            overflow: hidden;
+            border: 1px solid var(--border-color);
+        }
+
+        th, td {
+            padding: 16px 20px;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+            font-size: 16px;
+        }
+
+        th {
+            background: #181b26;
+            color: var(--text-main);
+            font-weight: 600;
+        }
+
+        td { color: var(--text-muted); }
+        td:first-child { color: var(--text-main); font-weight: 600; }
+
+        /* Навигация */
+        .controls {
+            height: 70px;
+            border-top: 1px solid var(--border-color);
+            background: var(--card-bg);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 60px;
+            z-index: 10;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 12px;
+        }
+
+        button {
+            background: #1f2433;
+            color: var(--text-main);
+            border: 1px solid var(--border-color);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        button:hover {
+            background: #2d3448;
+        }
+
+        .progress-bar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--adrenaline), var(--melatonin));
+            width: 12.5%;
+            transition: width 0.3s ease;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="progress-bar" id="progress"></div>
+
+    <div class="slides-container">
+
+        <!-- СЛАЙД 1: Титульный -->
+        <div class="slide active">
+            <span class="badge">Проектная работа по биологии</span>
+            <h1>Гормоны и жизнь:<br><span style="color: var(--adrenaline);">Адреналин</span> и <span style="color: #8280ff;">Мелатонин</span></h1>
+            <p style="max-width: 750px; font-size: 20px;">
+                Исследование двух ключевых гормонов-антагонистов, управляющих экстренной мобилизацией организма, суточными ритмами и восстановлением.
+            </p>
+            <div class="meta-box">
+                <div class="meta-item">
+                    <span>Автор работы</span>
+                    <strong>Отажонов Саидахмад Озодбекович</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Класс</span>
+                    <strong>8 Тесла</strong>
+                </div>
+                <div class="meta-item">
+                    <span>Дата проведения</span>
+                    <strong>23.10.2026</strong>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 2: Цель и введение -->
+        <div class="slide">
+            <span class="badge">Этап 1 и 2 • Введение в тему</span>
+            <h2>Эндокринная система и баланс</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3>Цель проекта</h3>
+                    <p>Изучить роль гормонов в организме человека, проанализировать механизмы их влияния на физиологические процессы и выяснить последствия нарушения гормонального баланса.</p>
+                </div>
+                <div class="card">
+                    <h3>Почему выбраны эти два гормона?</h3>
+                    <p>Жизнь человека строится на чередовании активности и отдыха. <strong>Адреналин</strong> отвечает за максимальную мобилизацию днем и в минуту опасности, а <strong>Мелатонин</strong> — за глубокое восстановление ночью.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 3: Адреналин (Синтез и влияние) -->
+        <div class="slide">
+            <span class="badge red">Гормон №1 • Режим «Бей или беги»</span>
+            <h2>Адреналин (Эпинефрин)</h2>
+            <div class="grid-2">
+                <div class="card red-border">
+                    <h3>Место синтеза и функции</h3>
+                    <ul>
+                        <li><strong>Где создается:</strong> Мозговое вещество надпочечников.</li>
+                        <li><strong>Триггер выброса:</strong> Опасность, стресс, страх, травма или спорт.</li>
+                        <li><strong>Главная задача:</strong> Мгновенная адаптация тела к экстремальным нагрузкам за доли секунды.</li>
+                    </ul>
+                </div>
+                <div class="card red-border">
+                    <h3>Влияние на системы органов</h3>
+                    <ul>
+                        <li><strong>Сердце и сосуды:</strong> Учащает пульс, повышает давление, направляет кровь к мышцам и мозгу.</li>
+                        <li><strong>Легкие:</strong> Расширяет бронхи для максимума кислорода.</li>
+                        <li><strong>Печень и обмен:</strong> Резко повышает уровень глюкозы в крови.</li>
+                        <li><strong>Нервная система:</strong> Расширяет зрачки, блокирует чувство боли.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 4: Адреналин (Нарушение баланса) -->
+        <div class="slide">
+            <span class="badge red">Гормон №1 • Нарушение баланса</span>
+            <h2>Последствия дисбаланса адреналина</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: var(--adrenaline);">▲ Избыток гормона</h3>
+                    <p style="margin-bottom: 12px;">Возникает при хроническом стрессе или опухолях надпочечников (феохромоцитома):</p>
+                    <ul>
+                        <li>Стойкая гипертония, высокий риск инфаркта и инсульта.</li>
+                        <li>Панические атаки, тремор рук, бессонница и раздражительность.</li>
+                        <li>Истощение нервной системы и потеря мышечной массы.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: #fbbf24;">▼ Недостаток гормона</h3>
+                    <p style="margin-bottom: 12px;">Возникает при надпочечниковой недостаточности и эмоциональном выгорании:</p>
+                    <ul>
+                        <li>Хроническая усталость, апатия и постоянная слабость.</li>
+                        <li>Низкое артериальное давление (гипотония) и головокружения.</li>
+                        <li>Заторможенная реакция в критических ситуациях и падение сахара.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 5: Мелатонин (Синтез и влияние) -->
+        <div class="slide">
+            <span class="badge blue">Гормон №2 • Режим «Сон и регенерация»</span>
+            <h2>Мелатонин</h2>
+            <div class="grid-2">
+                <div class="card blue-border">
+                    <h3>Место синтеза и функции</h3>
+                    <ul>
+                        <li><strong>Где создается:</strong> Эпифиз (шишковидная железа в центре мозга).</li>
+                        <li><strong>Триггер выброса:</strong> Наступление темноты (пик с 00:00 до 04:00).</li>
+                        <li><strong>Главная задача:</strong> Синхронизация биоритмов, запуск глубокого сна, защита клеток от старения.</li>
+                    </ul>
+                </div>
+                <div class="card blue-border">
+                    <h3>Влияние на системы органов</h3>
+                    <ul>
+                        <li><strong>Сердце и сосуды:</strong> Мягко снижает частоту пульса и давление.</li>
+                        <li><strong>Мозг:</strong> Снижает эмоциональное возбуждение и тревожность.</li>
+                        <li><strong>Иммунитет:</strong> Активирует Т-клетки и ускоряет регенерацию тканей.</li>
+                        <li><strong>Терморегуляция:</strong> Снижает температуру тела на 0,3–0,5 °C.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 6: Мелатонин (Нарушение баланса) -->
+        <div class="slide">
+            <span class="badge blue">Гормон №2 • Нарушение баланса</span>
+            <h2>Последствия дисбаланса мелатонина</h2>
+            <div class="grid-2">
+                <div class="card">
+                    <h3 style="color: #8280ff;">▲ Избыток гормона</h3>
+                    <p style="margin-bottom: 12px;">Возникает при нехватке солнечного света или передозировке добавками:</p>
+                    <ul>
+                        <li>Постоянная дневная сонливость, вялость и потеря концентрации.</li>
+                        <li>Снижение температуры тела и падение давления.</li>
+                        <li>Развитие сезонной хандры и подавленного состояния.</li>
+                    </ul>
+                </div>
+                <div class="card">
+                    <h3 style="color: #38bdf8;">▼ Недостаток гормона</h3>
+                    <p style="margin-bottom: 12px;">Возникает из-за синего света экранов смартфонов ночью и сбитого режима:</p>
+                    <ul>
+                        <li>Тяжелая бессонница и частые ночные пробуждения.</li>
+                        <li>Ослабление иммунитета и ускоренное старение клеток.</li>
+                        <li>Нарушение обмена веществ, риск ожирения и гипертонии.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- СЛАЙД 7: Сравнительная таблица -->
+        <div class="slide">
+            <span class="badge">Сравнительный анализ</span>
+            <h2>Адреналин и Мелатонин: Газ и Тормоз</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Критерий сравнения</th>
+                        <th style="color: var(--adrenaline);">Адреналин (Гормон действия)</th>
+                        <th style="color: #8280ff;">Мелатонин (Гормон покоя)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Железа внутренней секреции</td>
+                        <td>Мозговой слой надпочечников</td>
+                        <td>Эпифиз (шишковидная железа мозга)</td>
+                    </tr>
+                    <tr>
+                        <td>Условие выработки</td>
+                        <td>Стресс, опасность, физическая нагрузка</td>
+                        <td>Полная темнота и ночное время</td>
+                    </tr>
+                    <tr>
+                        <td>Пульс и артериальное давление</td>
+                        <td>Резко повышает</td>
+                        <td>Плавно снижает</td>
+                    </tr>
+                    <tr>
+                        <td>Нервная система</td>
+                        <td>Максимальное возбуждение и фокус</td>
+                        <td>Торможение, расслабление и сон</td>
+                    </tr>
+                    <tr>
+                        <td>Биологическая цель</td>
+                        <td>Спасение жизни в моменте</td>
+                        <td>Восстановление ресурсов и иммунитета</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- СЛАЙД 8: Вывод -->
+        <div class="slide">
+            <span class="badge">Этап 6 • Заключение</span>
+            <h2>Выводы по проектной работе</h2>
+            <div class="grid-3">
+                <div class="card">
+                    <h3>1. Единство противоположностей</h3>
+                    <p>Адреналин и мелатонин не враждуют, а дополняют друг друга: первый помогает преодолевать трудности днем, второй — восстанавливает тело ночью.</p>
+                </div>
+                <div class="card">
+                    <h3>2. Опасность сбоя</h3>
+                    <p>Вечерний стресс или использование гаджетов перед сном вызывают выброс адреналина и блокируют мелатонин, разрушая здоровье.</p>
+                </div>
+                <div class="card">
+                    <h3>3. Правило баланса</h3>
+                    <p>Для защиты эндокринной системы необходимы физическая активность днем и сон в полной темноте не менее 8 часов ночью.</p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Панель управления -->
+    <div class="controls">
+        <div style="color: var(--text-muted); font-size: 15px;">
+            Отажонов Саидахмад • 8 Тесла • <strong style="color: var(--text-main);" id="counter">Слайд 1 из 8</strong>
+        </div>
+        <div class="btn-group">
+            <button onclick="changeSlide(-1)">← Назад</button>
+            <button onclick="changeSlide(1)">Вперед →</button>
+        </div>
+    </div>
+
+    <script>
+        let current = 0;
+        const slides = document.querySelectorAll('.slide');
+        const counter = document.getElementById('counter');
+        const progress = document.getElementById('progress');
+
+        function updateView() {
+            slides.forEach((s, i) => {
+                s.classList.toggle('active', i === current);
+            });
+            counter.textContent = `Слайд ${current + 1} из ${slides.length}`;
+            progress.style.width = `${((current + 1) / slides.length) * 100}%`;
+        }
+
+        function changeSlide(dir) {
+            current = Math.max(0, Math.min(slides.length - 1, current + dir));
+            updateView();
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === ' ') changeSlide(1);
+            if (e.key === 'ArrowLeft') changeSlide(-1);
+        });
+    </script>
+</body>
+</html>
